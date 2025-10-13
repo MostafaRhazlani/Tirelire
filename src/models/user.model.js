@@ -14,8 +14,8 @@ const userSchema = new mongoose.Schema({
     role: { type: String, enum: [ "Particulier", "Admin" ], default: "Particulier" },
 
     kycStatus: { type: String, enum: ["panding", "verified", "rejected"], default: "panding" },
-    nationalIdImage: { type: String, required: true },
-    selfieImage: { type: String, required: true },
+    nationalIdImage: String,
+    selfieImage: String,
 
     punctualityScore: { type: Number, default: 0 },
 

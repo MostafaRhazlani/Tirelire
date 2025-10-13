@@ -10,8 +10,7 @@ const registerValidation = () => [
         .isLength({ min: 6 }).withMessage('Password must be at least 6 characters'),
     body('phone').notEmpty().withMessage('Phone is required'),
     body('cin').notEmpty().withMessage('CIN is required'),
-    body('nationalIdImage').notEmpty().withMessage('National ID image is required'),
-    body('selfieImage').notEmpty().withMessage('Selfie image is required')
+    body('nationalIdImage').notEmpty().withMessage('Natioanl id image is required'),
 ]
 
 const validate = (req, res, next) => {
