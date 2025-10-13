@@ -4,6 +4,7 @@ const router = express.Router();
 const upload = require('../middleware/upload.js');
 const { validate, registerValidation, logginValidation } = require('../middleware/user.validation');
 const authMiddleware = require('../middleware/auth.js');
+const roleMiddleware = require('../middleware/role.js');
 const userController = require('../controllers/user.controller');
 
 router.post('/user/store', (req, res, next) => {
@@ -17,9 +18,8 @@ router.post('/user/store', (req, res, next) => {
 }, registerValidation(), validate, (req, res) => userController.store(req, res));
 router.post('/user/login', upload.none(), logginValidation(), validate, (req, res) => userController.login(req, res));
 
-router.get('/profile', authMiddleware, (req, res) => {
+router.get('/profile', authMiddleware, roleMiddleware(['Particulier']), (req, res) => {
     res.send(`Welcome back MR. ${req.user.full_name}`);
-    
 })
 module.exports = router;
 
