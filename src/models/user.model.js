@@ -1,5 +1,5 @@
-const { ObjectId } = require('bson');
 const mongoose = require('mongoose');
+const { Schema } = mongoose;
 
 const userSchema = new mongoose.Schema({
     full_name: {type: String, required: true},
@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
     punctualityScore: { type: Number, default: 0 },
 
     groups: [{
-        type: ObjectId,
+        type: Schema.Types.ObjectId,
         ref: 'Group'
     }]
 }, { timestamps: true })

@@ -1,10 +1,6 @@
-const jwt = require('jsonwebtoken');
-
 const roleMiddleware = (roles) => {
     return (req, res, next) => {
-        const jwtSecret = process.env.JWTSECRET;
-        const token = req.header('Authorization').split(' ')[1];
-        const currentUser = jwt.decode(token, jwtSecret);
+        const currentUser = req.user;
         
         if(roles.includes(currentUser.role)) {
             next();
