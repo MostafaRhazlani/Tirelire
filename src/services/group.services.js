@@ -34,28 +34,52 @@ class GroupServices {
     }
 
     async leaveGroup(groupId, userId) {
-    try {
-        const group = await Group.findById(groupId);
-        if (!group) throw new Error('Group not found');
+        try {
+            const group = await Group.findById(groupId);
+            if (!group) throw new Error('Group not found');
 
-        // Check if user is a member
-        const isMember = group.members.some((m) => m.userId.toString() === userId);
-        if (!isMember) throw new Error('User is not a member of this group');
+            // Check if user is a member
+            const isMember = group.members.some((m) => m.userId.toString() === userId);
+            if (!isMember) throw new Error('User is not a member of this group');
 
-        // Prevent the owner from leaving
-        if (group.owner.toString() === userId) {
-            throw new Error('Owner cannot leave the group. You can delete it instead.');
+            // Prevent the owner from leaving
+            if (group.owner.toString() === userId) {
+                throw new Error('Owner cannot leave the group. You can delete it instead.');
+            }
+
+            // Remove user from members array
+            group.members = group.members.filter((m) => m.userId.toString() !== userId);
+            await group.save();
+            return group;
+
+        } catch (error) {
+            throw new Error('Failed to leave group: ' + error.message);
         }
-
-        // Remove user from members array
-        group.members = group.members.filter((m) => m.userId.toString() !== userId);
-        await group.save();
-        return group;
-
-    } catch (error) {
-        throw new Error('Failed to leave group: ' + error.message);
     }
-}
+
+    async updateRules(groupId, userId, rulesData) {
+        try {
+            const group = await Group.findById(groupId);
+            if (!group) throw new Error('Group not found');
+
+            // Only owner can update rules
+            if (group.owner.toString() !== userId) {
+                throw new Error('Only the group owner can update the rules');
+            }
+            
+            // Update rules fields
+            group.rules.contributionAmount = rulesData.contributionAmount ?? group.rules.contributionAmount;
+            group.rules.contributionFrequency = rulesData.contributionFrequency ?? group.rules.contributionFrequency;
+            group.rules.deadlineDays = rulesData.deadlineDays ?? group.rules.deadlineDays;
+
+            await group.save();
+
+            return group;
+        } catch (error) {
+            throw new Error('Failed to update rules: ' + error.message);
+        }
+    }
+
 
 }
 

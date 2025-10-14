@@ -32,6 +32,20 @@ class GroupController {
             res.status(500).json({ error: error.message });
         }
     }
+
+    async updateRules(req, res) {
+        try {
+            
+            const group = await GroupServices.updateRules(req.params.id, req.user.id, req.body);
+
+            res.status(200).json({
+                message: 'Group rules updated successfully',
+                group
+            });
+        } catch (error) {
+            res.status(400).json({ error: error.message });
+        }
+    }
 }
 
 module.exports = new GroupController;
