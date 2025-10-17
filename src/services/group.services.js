@@ -1,5 +1,8 @@
 const { default: mongoose } = require('mongoose');
 const Group = require('../models/group.model');
+const User = require('../models/user.model');
+const path = require('path');
+const fs = require('fs');
 
 class GroupServices {
     async store(data) {
@@ -10,14 +13,15 @@ class GroupServices {
         }
     }
 
-    async joinGroup(groupId, user) {
+    async joinGroup(groupId, user, image) {
         try {
             const group = await Group.findById(groupId);
             if(!group) throw new Error('Group not found');
-
-            // prevent duplicate join
-            const alreadeyMember = group.members.some((m) => m.userId.toString() === user.id);
-            if(alreadeyMember) throw new Error('User already joined this group');
+            
+            // store selfie image in user document
+            const getUser = await User.findById(user.id);
+            getUser.selfieImage = image.filename;
+            await getUser.save();
 
             const groupRole = user.id === group.owner.toString() ? 'owner' : 'member';
             group.members.push({
@@ -36,6 +40,7 @@ class GroupServices {
     async leaveGroup(groupId, userId) {
         try {
             const group = await Group.findById(groupId);
+            
             if (!group) throw new Error('Group not found');
 
             // Check if user is a member
@@ -47,8 +52,21 @@ class GroupServices {
                 throw new Error('Owner cannot leave the group. You can delete it instead.');
             }
 
+            const user = await User.findById(userId);
+            if(user && user.selfieImage) {
+
+                // remove image from database and folder images
+                const imagePath = path.join(__dirname, '../../public/images', user.selfieImage);
+                if(fs.existsSync(imagePath)) {
+                    fs.unlinkSync(imagePath);
+                }
+
+                user.selfieImage = null;
+                await user.save();
+            }
+
             // Remove user from members array
-            group.members = group.members.filter((m) => m.userId.toString() !== userId);
+            group.members = group.members.filter((m) => m.userId === userId);
             await group.save();
             return group;
 

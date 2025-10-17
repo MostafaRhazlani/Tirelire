@@ -15,7 +15,7 @@ class GroupController {
     async joinGroup(req, res) {
         try {
             
-            const group = await GroupServices.joinGroup(req.params.id, req.user);
+            const group = await GroupServices.joinGroup(req.params.id, req.user, req.file);
             res.status(200).json({ message: 'You have successfully joined the group', group });
         } catch (error) {
             res.status(500).json({ error: error.message });
