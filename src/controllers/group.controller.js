@@ -46,6 +46,16 @@ class GroupController {
             res.status(400).json({ error: error.message });
         }
     }
+
+    async updateScoreAllMembers(req, res) {
+        try {
+            
+            const result = await GroupServices.updateScoreAllMembers();
+            res.status(200).json({ groups: result });
+        } catch (error) {
+            res.status(400).json({ error: error.message });
+        }
+    }
 }
 
 module.exports = new GroupController;

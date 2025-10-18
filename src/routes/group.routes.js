@@ -22,6 +22,7 @@ router.post('/group/:id/join', authMiddleware, roleMiddleware('Particulier'), ch
 }, verfyFace, validate, (req, res) => GroupController.joinGroup(req, res));
 router.delete('/group/:id/leave', authMiddleware, roleMiddleware('Particulier'), upload.none(), validate, (req, res) => GroupController.leaveGroup(req, res));
 router.patch('/group/:id/rules', authMiddleware, roleMiddleware('Particulier'), upload.none(), validate, (req, res) => GroupController.updateRules(req, res));
+router.post('/group/calculate-score', authMiddleware, roleMiddleware('Admin'), upload.none(), validate, (req, res) => GroupController.updateScoreAllMembers(req, res));
 
 module.exports = router;
 

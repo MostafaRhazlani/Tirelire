@@ -8,7 +8,8 @@ const groupSchema = new mongoose.Schema({
     members: [{
         userId: { type: Schema.Types.ObjectId, ref: "User" },
         role: { type: String, enum: ["owner", "member"], default: "member" },
-        joinTimeScore: Number // score at time of joining
+        joinTimeScore: Number, // score at time of joining
+        joinDate: Date
     }],
     rules: {
         contributionAmount: Number,
