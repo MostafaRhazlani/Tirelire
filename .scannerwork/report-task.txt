@@ -1,0 +1,7 @@
+organization=mostafarhazlani
+projectKey=mostafarhazlani
+serverUrl=https://sonarcloud.io
+serverVersion=8.0.0.68867
+dashboardUrl=https://sonarcloud.io/dashboard?id=mostafarhazlani
+ceTaskId=AZn-WVp808rYPpW8aWc-
+ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AZn-WVp808rYPpW8aWc-

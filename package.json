@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node app.js",
     "start:dev": "node --watch src/app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npx jest",
+    "test:coverage": "npx jest --coverage"
   },
   "keywords": [],
   "author": "",
@@ -23,5 +24,8 @@
     "multer": "^2.0.2",
     "node": "^24.9.0",
     "stripe": "^19.1.0"
+  },
+  "devDependencies": {
+    "jest": "^30.2.0"
   }
 }
